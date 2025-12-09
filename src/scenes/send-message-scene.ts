@@ -35,17 +35,17 @@ const step2 = async (ctx: WizardContextWithState) => {
     // 2. Send confirmation + menu (1 message only)
     const confirmation = await ctx.reply(
       `✅ Xabar yuborildi!\n\n<b>Xabar:</b> ${msg.text}`,
+      { parse_mode: 'HTML' },
     );
 
     // 3. DELETE the temporary messages
     try {
-      if (askMsgId) await ctx.deleteMessage(askMsgId); // remove "write your message"
+      if (askMsgId) {
+        await ctx.deleteMessage(askMsgId);
+        await ctx.deleteMessage(msg.message_id);
+        await ctx.deleteMessage(confirmation.message_id);
+      }
     } catch (e) {}
-
-    try {
-      await ctx.deleteMessage(msg.message_id); // remove user's message
-    } catch (e) {}
-    await ctx.deleteMessage(confirmation.message_id); // remove confirmation message
     // 4. Leave scene
     return ctx.scene.leave();
   } catch (error) {
