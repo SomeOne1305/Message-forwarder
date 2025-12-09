@@ -16,7 +16,7 @@ const step2 = async (ctx: Scenes.WizardContext) => {
     return;
   }
 
-  await ctx.telegram.sendMessage(CHANEL_ID, `📩 Anonim xabar:\n\n${msg.text}`);
+  await ctx.telegram.sendMessage(CHANEL_ID, `${msg.text}`);
 
   await ctx.reply('✅ Xabaringiz kanalga yuborildi!');
 
