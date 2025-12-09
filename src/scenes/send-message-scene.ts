@@ -1,4 +1,4 @@
-import { Markup, Scenes } from 'telegraf';
+import { Scenes } from 'telegraf';
 import { CHANEL_ID } from '../constants';
 
 type WizardContextWithState = Scenes.WizardContext & {
@@ -35,12 +35,6 @@ const step2 = async (ctx: WizardContextWithState) => {
     // 2. Send confirmation + menu (1 message only)
     const confirmation = await ctx.reply(
       `✅ Xabar yuborildi!\n\n<b>Xabar:</b> ${msg.text}`,
-      {
-        parse_mode: 'HTML',
-        ...Markup.inlineKeyboard([
-          [Markup.button.callback('✉️ Yangi xabar yozish', 'send_message')],
-        ]),
-      },
     );
 
     // 3. DELETE the temporary messages
