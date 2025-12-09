@@ -1,9 +1,9 @@
-import { Scenes } from 'telegraf';
+import { Markup, Scenes } from 'telegraf';
 import { CHANEL_ID } from '../constants';
 
 // Step 1 — ask to send message
 const step1 = async (ctx: Scenes.WizardContext) => {
-  await ctx.reply('✍️ Xabaringizni yozing:');
+  await ctx.editMessageText('✍️ Xabaringizni yozing:');
   return ctx.wizard.next();
 };
 
@@ -18,8 +18,15 @@ const step2 = async (ctx: Scenes.WizardContext) => {
 
   await ctx.telegram.sendMessage(CHANEL_ID, `${msg.text}`);
 
-  await ctx.reply('✅ Xabaringiz kanalga yuborildi!');
-
+  const success_message = await ctx.reply('✅ Xabaringiz kanalga yuborildi!');
+  ctx.deleteMessage(msg.message_id);
+  ctx.deleteMessage(success_message.message_id);
+  ctx.editMessageText(
+    '🏠 Bosh sahifa',
+    Markup.inlineKeyboard([
+      Markup.button.callback('✉️ Xabar yuborish', 'send_message', false),
+    ]),
+  );
   return ctx.scene.leave();
 };
 
