@@ -37,14 +37,14 @@ const step2 = async (ctx: WizardContextWithState) => {
       `✅ Xabar yuborildi!\n\n<b>Xabar:</b> ${msg.text}`,
       { parse_mode: 'HTML' },
     );
-
     // 3. DELETE the temporary messages
     try {
-      if (askMsgId) {
-        await ctx.deleteMessage(askMsgId);
-        await ctx.deleteMessage(msg.message_id);
-        await ctx.deleteMessage(confirmation.message_id);
-      }
+      if (askMsgId)
+        Promise.all([
+          ctx.deleteMessage(askMsgId),
+          ctx.deleteMessage(confirmation.message_id),
+          ctx.deleteMessage(msg.message_id),
+        ]);
     } catch (e) {}
     // 4. Leave scene
     return ctx.scene.leave();
